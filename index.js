@@ -19,7 +19,6 @@ var programs = {
 function main() {
   var canvas = document.getElementById("canvas");
   var gl = canvas.getContext("webgl");
-  window.gl = gl;
   if (!gl) {
     console.error("WebGL isn't supported on this browser");
     return;

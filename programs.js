@@ -11,7 +11,6 @@ function setupProgramInfo(gl, programInfo) {
   programInfo.program = program;
   programInfo.attribs = {};
   programInfo.uniforms = {};
-  console.log(program);
 
   // auto-detect attribute & uniform locations
 
