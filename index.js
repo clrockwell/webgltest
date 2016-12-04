@@ -46,6 +46,7 @@ function render(gl) {
   gl.useProgram(programs.default.program);
 
   programs.default.attribs.a_position(buffers.position);
+  gl.uniform4f(programs.default.uniforms.u_color, Math.random(), Math.random(), Math.random(), 1);
 
   var primitiveType = gl.TRIANGLES;
   var offset = 0;
