@@ -16,9 +16,3 @@ function createBuffer(gl, data) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
   return buffer;
 }
-
-function attachBufferToAttrib(gl, bufferInfo, attribLocation) {
-  gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.buffer);
-  gl.enableVertexAttribArray(attribLocation);
-  gl.vertexAttribPointer(attribLocation, bufferInfo.size, gl.FLOAT, bufferInfo.normalize, bufferInfo.stride, bufferInfo.offset);
-}

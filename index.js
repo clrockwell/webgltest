@@ -5,10 +5,7 @@ var buffers = {
       0, 0.5,
       0.7, 0
     ],
-    size: 2,
-    normalize: false,
-    stride: 0,
-    offset: 0
+    size: 2
   }
 };
 
@@ -48,7 +45,7 @@ function render(gl) {
 
   gl.useProgram(programs.default.program);
 
-  attachBufferToAttrib(gl, buffers.position, programs.default.attribs.a_position);
+  programs.default.attribs.a_position(buffers.position);
 
   var primitiveType = gl.TRIANGLES;
   var offset = 0;

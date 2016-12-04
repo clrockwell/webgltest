@@ -19,7 +19,7 @@ function setupProgramInfo(gl, programInfo) {
   for (var i = 0; i < numAttribs; i++) {
     var attrib = gl.getActiveAttrib(program, i);
     var location = gl.getAttribLocation(program, attrib.name);
-    programInfo.attribs[attrib.name] = location;
+    programInfo.attribs[attrib.name] = createAttribSetter(gl, location);
   }
 
   var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
@@ -28,4 +28,19 @@ function setupProgramInfo(gl, programInfo) {
     var location = gl.getUniformLocation(program, uniform.name);
     programInfo.uniforms[uniform.name] = location;
   }
+}
+
+function createAttribSetter(gl, attribLocation) {
+  return function attachBufferToAttrib(bufferInfo) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfo.buffer);
+    gl.enableVertexAttribArray(attribLocation);
+    gl.vertexAttribPointer(
+      attribLocation,
+      bufferInfo.size,
+      bufferInfo.float || gl.FLOAT,
+      bufferInfo.normalize || false,
+      bufferInfo.stride || 0,
+      bufferInfo.offset || 0
+    );
+  };
 }
