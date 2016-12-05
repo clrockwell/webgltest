@@ -8,6 +8,7 @@ function initBuffers(gl) {
 
 function setupBufferInfo(gl, bufferInfo) {
   bufferInfo.buffer = createBuffer(gl, bufferInfo.data);
+  bufferInfo.numElements = bufferInfo.data.length / bufferInfo.numComponents;
 }
 
 function createBuffer(gl, data) {

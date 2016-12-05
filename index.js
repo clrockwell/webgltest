@@ -1,11 +1,11 @@
 var buffers = {
   position: {
+    numComponents: 2,
     data: [
       0, 0,
       0, 0.5,
       0.7, 0
-    ],
-    size: 2
+    ]
   }
 };
 
@@ -15,6 +15,26 @@ var programs = {
     fragment: "fragment"
   }
 };
+
+var toDraw = [];
+
+function makeTri() {
+  return {
+    program: "default",
+    attribs: {
+      a_position: "position"
+    },
+    uniforms: {
+      u_color: new Float32Array([Math.random(), Math.random(), Math.random(), 1]),
+      u_translate: new Float32Array([randRange(-1, 1), randRange(-1, 1), 0, 0])
+    }
+  };
+}
+
+function randRange(from, to) {
+  var range = to - from;
+  return (Math.random() * range) + from;
+}
 
 function main() {
   var canvas = document.getElementById("canvas");
@@ -26,6 +46,10 @@ function main() {
 
   initPrograms(gl);
   initBuffers(gl);
+
+  for (var i = 0; i < 100; i++) {
+    toDraw.push(makeTri());
+  }
 
   function mainLoop() {
     render(gl);
@@ -42,15 +66,47 @@ function render(gl) {
   gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  gl.useProgram(programs.default.program);
+  drawObjects(gl, toDraw);
+}
 
-  programs.default.attribs.a_position(buffers.position);
-  var color = new Float32Array([Math.random(), Math.random(), Math.random(), 1]);
-  programs.default.uniforms.u_color(color);
+function drawObjects(gl, objectInfos) {
+  for (var i = 0; i < objectInfos.length; i++) {
+    drawObject(gl, objectInfos[i]);
+  }
+}
 
-  var primitiveType = gl.TRIANGLES;
+var lastProgramInfo;
+
+function drawObject(gl, objectInfo) {
+  var programInfo = programs[objectInfo.program];
+  if (programInfo !== lastProgramInfo) {
+    lastProgramInfo = programInfo;
+    gl.useProgram(programInfo.program);
+  }
+
+  var count = 0;
+
+  var attribNames = Object.keys(objectInfo.attribs);
+  for (var i = 0; i < attribNames.length; i++) {
+    var attribName = attribNames[i];
+    var bufferName = objectInfo.attribs[attribName];
+    var bufferInfo = buffers[bufferName];
+    count = bufferInfo.numElements;
+    var attribSetter = programInfo.attribs[attribName];
+    attribSetter(bufferInfo);
+  }
+
+  var uniformNames = Object.keys(objectInfo.uniforms);
+  for (i = 0; i < uniformNames.length; i++) {
+    var uniformName = uniformNames[i];
+    var uniformValue = objectInfo.uniforms[uniformName];
+    var uniformSetter = programInfo.uniforms[uniformName];
+    uniformSetter(uniformValue);
+  }
+
+  var primitiveType = objectInfo.type || gl.TRIANGLES;
   var offset = 0;
-  var count = 3;
+  // var count = 3;
   gl.drawArrays(primitiveType, offset, count);
 }
 

@@ -35,7 +35,7 @@ function createAttribSetter(gl, attribLocation) {
     gl.enableVertexAttribArray(attribLocation);
     gl.vertexAttribPointer(
       attribLocation,
-      bufferInfo.size,
+      bufferInfo.numComponents,
       bufferInfo.float || gl.FLOAT,
       bufferInfo.normalize || false,
       bufferInfo.stride || 0,
