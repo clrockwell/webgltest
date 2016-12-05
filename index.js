@@ -51,7 +51,17 @@ function main() {
     toDraw.push(makeTri());
   }
 
-  function mainLoop() {
+  // var lastTime;
+  function mainLoop(time) {
+    // if (!lastTime) {
+    //   lastTime = time;
+    // }
+    // var elapsed = time - lastTime;
+
+    var lastObj = toDraw[toDraw.length - 1];
+    lastObj.uniforms.u_translate[0] = Math.sin(time / 1000);
+    lastObj.uniforms.u_translate[1] = Math.cos(time / 1000);
+
     render(gl);
     window.requestAnimationFrame(mainLoop);
   }
