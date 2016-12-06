@@ -39,6 +39,7 @@ function randRange(from, to) {
 function main() {
   var canvas = document.getElementById("canvas");
   var gl = canvas.getContext("webgl");
+  window.gl = gl;
   if (!gl) {
     console.error("WebGL isn't supported on this browser");
     return;
@@ -51,23 +52,18 @@ function main() {
     toDraw.push(makeTri());
   }
 
-  // var lastTime;
-  function mainLoop(time) {
-    // if (!lastTime) {
-    //   lastTime = time;
-    // }
-    // var elapsed = time - lastTime;
-
-    var lastObj = toDraw[toDraw.length - 1];
-    lastObj.uniforms.u_translate[0] = Math.sin(time / 1000);
-    lastObj.uniforms.u_translate[1] = Math.cos(time / 1000);
-
-    render(gl);
-    window.requestAnimationFrame(mainLoop);
-  }
   window.requestAnimationFrame(mainLoop);
 }
 main();
+
+function mainLoop(time) {
+  var lastObj = toDraw[toDraw.length - 1];
+  lastObj.uniforms.u_translate[0] = Math.sin(time / 1000);
+  lastObj.uniforms.u_translate[1] = Math.cos(time / 1000);
+
+  render(window.gl);
+  window.requestAnimationFrame(mainLoop);
+}
 
 function render(gl) {
   resize(gl.canvas);
