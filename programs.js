@@ -44,7 +44,7 @@ function createAttribSetter(gl, attribLocation) {
   };
 }
 
-function createUniformSetter(program, uniformInfo, uniformLocation) {
+function createUniformSetter(gl, uniformInfo, uniformLocation) {
   // Check if this uniform is an array
   var isArray = (uniformInfo.size > 1 && uniformInfo.name.substr(-3) === "[0]");
 
