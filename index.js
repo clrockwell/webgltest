@@ -96,9 +96,7 @@ function drawObject(gl, objectInfo) {
 
   var count = 0;
 
-  var attribNames = Object.keys(objectInfo.attribs);
-  for (var i = 0; i < attribNames.length; i++) {
-    var attribName = attribNames[i];
+  for (var attribName in objectInfo.attribs) {
     var bufferName = objectInfo.attribs[attribName];
     var bufferInfo = buffers[bufferName];
     count = bufferInfo.numElements;
@@ -106,9 +104,7 @@ function drawObject(gl, objectInfo) {
     attribSetter(bufferInfo);
   }
 
-  var uniformNames = Object.keys(objectInfo.uniforms);
-  for (i = 0; i < uniformNames.length; i++) {
-    var uniformName = uniformNames[i];
+  for (var uniformName in objectInfo.uniforms) {
     var uniformValue = objectInfo.uniforms[uniformName];
     var uniformSetter = programInfo.uniforms[uniformName];
     uniformSetter(uniformValue);
